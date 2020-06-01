@@ -1,0 +1,157 @@
+body {
+    background: greenyellow ;	
+}
+
+.navbar{
+    background-color: #333;
+    color: wheat;
+}
+
+.navitem{
+    float: right;
+}
+
+.btn{
+    color: #333;
+    background-color: greenyellow;
+    font-size: 20px;
+    padding: 10px;
+    margin: 40px 20px;
+    border: 2px solid wheat;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submitbtn{
+    color: greenyellow;
+    background-color: #333;
+    
+}
+
+.navtitle{
+    display: inline-block;
+    font-weight: bold;
+    font-size: 45px;
+    text-shadow: 1px 1px greenyellow; 
+    border: 2px solid wheat;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+}
+
+/* .login {
+    margin: auto;
+}
+
+.form-login {
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+    background-color: #333;
+}   */
+
+/* .heading{
+    color:wheat;
+} */
+
+/* .form-control {
+    font-size: 15px;
+    padding: 10px;
+    box-sizing:border-box;
+}
+
+input[type="text"] {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: greenyellow;
+}
+
+input[type="password"] {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: greenyellow;
+}
+
+.loginsubmit{
+    color: #333;
+    background-color: greenyellow;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 10px;
+} */
+
+.searchbox{
+    font-size: 10px;
+}
+
+.searchbox {
+    /* width: 20%; */
+    border: 3px solid wheat;
+    /* border-right: none; */
+    padding: 5px;
+    background-color: greenyellow;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    color: #333;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+}
+  
+.searchTerm:focus{
+    color: #00B4CC;
+}
+  
+.searchButton {
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    border: 1px solid wheat;
+    background: greenyellow;
+    text-align: center;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 15px;
+}
+
+.intro{
+    color: #333;
+    font-size: 35px;
+    font-weight: bolder;
+    text-align: center;
+    letter-spacing: 2px;
+    padding: 20px;
+    line-height: 50px;
+    text-shadow: 1px 1px wheat;
+}
+
+p{
+    color: #333;
+    font-size: 20px;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    padding: 0px;
+    margin-left: 20px;
+    text-shadow: 1px 1px wheat;
+}
+
+textarea{
+    background-color: #333;
+    color: greenyellow;
+    border-radius: 5px;
+    resize: none;
+    font-size: 20px;
+    width: 700px;
+    /* height: 20px; */
+    margin-left: 20px;
+}
+
+.body{
+    width: 900px;
+
+}
+

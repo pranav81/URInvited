@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Invitation</title>
+    <link rel="stylesheet" href="invitestyles.css">
+</head>
+<body>
+    <nav class = 'navbar'>
+        
+        <div class = 'navtitle'>Invitee</div>
+        <div class = 'navitem' >
+            <!-- <input type="text" class="searchbox" name="search" placeholder="Search for articles">
+            <button type="submit" class="searchButton">GO
+            </button> -->
+            <!-- <a href="/profile"><button class = "btn">Profile</button></a> -->
+
+            <a href = "../dashboard"><button class = "btn">Dashboard</button></a>
+
+            <a href="/"><button class = "btn">LogOut</button></a>
+        </div>
+                
+    </nav>
+
+    <p class = 'intro'>Fill up the basic template and get going...</p>
+    <br>
+    <form action="/addinvitation" method = "POST">
+        <p>TITLE:</p>
+        <textarea class = 'title' placeholder = 'Enter Title' name = 'title' rows= 1 wrap="off"></textarea>
+
+        <!-- <p>DESCRIPTION:</p> -->
+        <!-- <textarea class = 'desc' placeholder = 'Enter a short description' name = 'desc' rows= 2></textarea> -->
+        
+        <p>BODY:</p>
+        <textarea class = 'body' placeholder="Enter the body of your invitation.." name="body" rows = "15"></textarea>
+        
+        <p>Date, Time and Venue: </p>
+        <textarea name="dtv" rows="3" placeholder="Enter the date, time and venue..."></textarea>
+        <p>FOOTER:</p>
+        <textarea name="footer" class="footer" rows="3" placeholder="Looking forward to your acceptance..."></textarea>
+        <p>Recipients: </p>
+        <textarea name="recipients" class="recipients" rows="5" placeholder="Names of the recipients.."></textarea>
+        <br>
+        <button class = 'submitbtn btn' type="submit">SUBMIT</button>
+        
+    </form>
+
+</body>
+</html>
