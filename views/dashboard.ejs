@@ -20,8 +20,81 @@
         </div>
                 
     </nav>
+
     
-    <p>No more events :(</p>
-    
+    <% if((Object.keys(invitations[0]).length) == 3){ %>
+
+        <% for (var k=0;k < invitations.length; k++) { %>
+            <% if(invitations[k].Author == username) { %>
+                <% if(count1==0) { %>
+                    <h1>Invitations by me:</h1>
+                    <hr><hr>
+                    <% count1++ %>
+                <% } %>
+                <a href="/dashboard/<%= invitations[k].Title %>"><h1><%= invitations[k].Title %></h1></a>
+                <hr>
+            <% } %>
+        <% } %>
+
+        <% for(var i=0; i < invitations.length; i++) { %>
+            <% if(!(index.includes(i))) { %>
+                <% if ( count==0) { %>
+                    <h1>Invitations for me:</h1>
+                    <hr><hr>
+                    <% count = count+1 %>
+                <% } %>
+                <a href="/dashboard/<%= invitations[i].Title %>"><h1><%= invitations[i].Title %></h1></a>
+                <p class="desc">- <%= invitations[i].Author %></p>
+                <div class="acceptreject">
+                <button class = "accept">ACCEPT</button>
+                <button class = "reject">REJECT</button>
+                <hr>
+                </div>
+            <% } %>
+            <!-- <% if (invitations[i].Author == username) { %> -->
+                <!-- <% if(i==0) { %>
+                    <h1>Invitations by me:</h1>
+                    <hr><hr>
+                <% } %> -->
+                <!-- <a href="/dashboard/<%= invitations[i].Title %>"><h1><%= invitations[i].Title %></h1></a>
+                <hr>
+            <% } %>       -->
+            
+        <% } %>
+        
+        <p>No more events :(</p>
+    <% }else{ %>
+        <% for(var i=0; i < invitations.length; i++) { %>
+            <% if(invitations[i].Title==title){ %>
+            <h1><%= invitations[i].Title %></h1>
+            <p class = "desc"><%= invitations[i].Body %></p>
+            <p class = "desc"><%= invitations[i].DTV %></p>
+            <p class="desc"><%= invitations[i].Footer %></p>
+            <% if(!(name===invitations[i].Author)){ %>
+            <p class="desc">- <%= invitations[i].Author %></p>
+            <div class="acceptreject">
+            <button class = "accept">ACCEPT</button>
+            <button class = "reject">REJECT</button>
+            </div>
+            <% } %>
+            <hr>
+            <% } %>
+        <% } %>
+    <% } %>
+    <script>
+        var ar = document.getElementsByClassName('acceptreject');
+        document.addEventListener('click', (e)=>{
+            console.log('clicked');
+            console.log(e.target.innerHTML);
+            if(e.target.innerHTML=='REJECT'){
+                // e.target.innerHTML= 'REJECTED';
+                console.log(e.target.parentNode.innerHTML= '<p class="desc"> REJECTED! </p><hr>' );
+            }
+            if(e.target.innerHTML=='ACCEPT'){
+                // e.target.innerHTML= 'REJECTED';
+                console.log(e.target.parentNode.innerHTML= '<p class="desc"> ACCEPTED! </p><hr>' );
+            }
+        });
+    </script>
 </body>
 </html>

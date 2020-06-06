@@ -15,6 +15,7 @@ var app = express();
 
 app.set('view engine', 'ejs');
 app.use('/', express.static('assets'));
+app.use('/dashboard/', express.static('assets'));
 
 app.use(session({
 	secret: 'my secret code for URInvited',
@@ -88,10 +89,56 @@ app.post('/signupauth', function(req, res) {
 
 app.get('/dashboard', (req,res)=>{
     if(req.session.loggedin){
-        res.render('dashboard');
+        var index = [100000];
+        var resultobj=[];
+        var name;
+        connection.query("SELECT Name FROM UserAccounts WHERE Username=?",[req.session.username], (error, results, fields)=>{
+            if (error) throw error;
+            if(results){
+                name=results[0].Name;
+            }
+        });
+        var q = "SELECT Title,Author,Recipients FROM Invitations";
+        connection.query(q, (error, results, fields)=>{
+            if (error) throw error;
+            var j=0;
+            for(var i in results){
+                console.log(results);
+                if((!(JSON.parse(results[j].Recipients)).includes(name))){
+                    console.log("Sth");
+                    index.push(j);
+                    //results.splice(j,1);
+                    // resultobj.push(results[j]);
+                }
+                j++;
+            }
+            console.log(Object.keys(results[0]).length);
+            res.render('dashboard', {invitations: results, index: index, username:req.session.username, count: 0, count1: 0});
+            
+        });        
+
+
     }else{
         res.redirect('/login');
         res.end();
+    }
+});
+
+app.get('/dashboard/:id', (req,res)=>{
+    if(req.session.loggedin){
+        var name;
+        connection.query("SELECT Name FROM UserAccounts WHERE Username=?",[req.session.username], (error, results, fields)=>{
+            if (error) throw error;
+            if(results){
+                name=results[0].Name;
+            }
+        });
+        var q = "SELECT * FROM Invitations";
+        connection.query(q, (error, results, fields)=>{
+            if(error) throw error;
+            console.log(Object.keys(results[0]).length);
+            res.render('dashboard', {invitations: results, title:req.params.id, name:req.session.username});
+        });
     }
 });
 

@@ -125,16 +125,17 @@ p, h1, div.desc, .body{
 
 h1{
     color: wheat;
-    text-align: center;
-    line-height: 50px;
+    text-align: left;
+    line-height: 30px;
     text-shadow: 2px 2px #333;
+    display: inline-block;
 
 }
 
 .desc, div.desc, .body{
     color: #333;
 
-    text-align: center;
+    text-align: left;
     font-size: 22px;
     line-height: normal;
     padding: 0px;
@@ -142,7 +143,28 @@ h1{
 
 }
 
+.accept{
+    margin-left:20px;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 3px;
+    color: wheat;
+    background-color: green;
+    margin-bottom: 20px;
+}
+.reject{
+    padding: 5px;
+    color: wheat;
+    font-size: 15px;
+    border-radius: 3px;
+    background-color: red;
+}
+
 .body{
     text-align: left;
     font-size: 20px;
+}
+
+a{
+    text-decoration: none;
 }
