@@ -98,12 +98,12 @@ app.get('/dashboard', (req,res)=>{
                 name=results[0].Name;
             }
         });
-        var q = "SELECT Title,Author,Recipients FROM Invitations";
+        var q = "SELECT Title,Author,Recipients,Accepted,Rejected FROM Invitations";
         connection.query(q, (error, results, fields)=>{
             if (error) throw error;
             var j=0;
             for(var i in results){
-                console.log(results);
+                // console.log(results);
                 if((!(JSON.parse(results[j].Recipients)).includes(name))){
                     console.log("Sth");
                     index.push(j);
@@ -142,6 +142,45 @@ app.get('/dashboard/:id', (req,res)=>{
     }
 });
 
+app.post('/ar/:title', (req,res)=>{
+    console.log("post request initiated...");
+    console.log(req.body);
+    console.log(req.params);
+    var ar = req.body.ar;
+    var accept = [];
+    var reject = [];
+    var status={};
+    console.log(typeof(status.accepted));
+    if(ar=='accept'){
+        connection.query('SELECT Accepted FROM Invitations WHERE Title=?', [req.params.title], (error,results,fields)=>{
+            if(JSON.parse(results[0].Accepted=='NA')){
+                accept.push(req.session.username);
+                var q = 'UPDATE Invitations SET Accepted=? WHERE Title=?';
+                connection.query(q, [JSON.stringify(accept), req.params.title], (error, results, fields)=>{
+                    console.log("succesful update");
+                })
+            }else{
+                console.log(JSON.parse(results[0].Accepted));
+            }
+        })
+    }else if(ar=='reject'){
+        connection.query('SELECT Rejected FROM Invitations WHERE Title=?', [req.params.title], (error,results,fields)=>{
+            if(JSON.parse(results[0].Rejected=='NA')){
+                reject.push(req.session.username);
+                var q = 'UPDATE Invitations SET Rejected=? WHERE Title=?';
+                connection.query(q, [JSON.stringify(reject), req.params.title], (error, results, fields)=>{
+                    console.log("succesful update");
+                })
+            }
+        })
+    }
+
+    
+    console.log("Status",status);
+    var q = "ALTER TABLE Invitations Status"
+    res.redirect('/dashboard');
+});
+
 app.get('/invite', (req,res)=>{
     if(req.session.loggedin){    
         res.render('invitation');
@@ -160,7 +199,7 @@ app.post('/addinvitation', (req, res)=>{
     var recipients = (JSON.stringify(req.body.recipients.split(',')));
     
     if(title && body && dtv && footer && author){
-        var q= 'INSERT INTO Invitations VALUES (?, ?, ?, ?, ?, ?)';
+        var q= 'INSERT INTO Invitations (Title,Body,DTV,Footer,Author,Recipients) VALUES (?, ?, ?, ?, ?, ?)';
         connection.query(q, [title, body, dtv, footer, author, recipients], function(error, results, fields) {
             if (error) throw error;
             res.redirect('/dashboard');
