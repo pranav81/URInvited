@@ -9,12 +9,9 @@
 <body>
     <nav class = 'navbar'>
         
-        <div class = 'navtitle'>Invitee</div>
+        <div class = 'navtitle'>URInvited.com</div>
         <div class = 'navitem' >
-            <!-- <input type="text" class="searchbox" name="search" placeholder="Search for articles"> -->
-            <!-- <button type="submit" class="searchButton">GO -->
-            <!-- </button> -->
-            <!-- <a href="/profile"><button class = "btn">Profile</button></a> -->
+            
             <a href="/invite"><button class = "btn">New Invitation</button></a>
             <a href="/"><button class = "btn">LogOut</button></a>
         </div>
@@ -27,7 +24,7 @@
         <% for (var k=0;k < invitations.length; k++) { %>
             <% if(invitations[k].Author == username) { %>
                 <% if(count1==0) { %>
-                    <h1>Invitations by me:</h1>
+                    <h1 class='i'>Invitations by me:</h1>
                     <hr><hr>
                     <% count1++ %>
                 <% } %>
@@ -39,7 +36,7 @@
         <% for(var i=0; i < invitations.length; i++) { %>
             <% if(!(index.includes(i))) { %>
                 <% if ( count==0) { %>
-                    <h1>Invitations for me:</h1>
+                    <h1 class="i">Invitations for me:</h1>
                     <hr><hr>
                     <% count = count+1 %>
                 <% } %>
@@ -52,23 +49,10 @@
                     <p class="desc">REJECTED!</p>
                 <% } %>
                 <div class="acceptreject">
-                <!-- <button class = "accept">ACCEPT</button>
-                <button class = "reject">REJECT</button> -->
-                <!-- <form action="/ar" method="post">
-                    <button name="ar" value="accept">Accept</button>
-                    <button name="ar" value="reject">Reject</button>
-                </form> -->
+                
                 <hr>
                 </div>
             <% } %>
-            <!-- <% if (invitations[i].Author == username) { %> -->
-                <!-- <% if(i==0) { %>
-                    <h1>Invitations by me:</h1>
-                    <hr><hr>
-                <% } %> -->
-                <!-- <a href="/dashboard/<%= invitations[i].Title %>"><h1><%= invitations[i].Title %></h1></a>
-                <hr>
-            <% } %>       -->
             
         <% } %>
         
@@ -83,8 +67,7 @@
                 <% if(!(name===invitations[i].Author)){ %>
                     <p class="desc">- <%= invitations[i].Author %></p>
                     <div class="acceptreject">
-                    <!-- <button class = "accept">ACCEPT</button>
-                    <button class = "reject">REJECT</button> -->
+
                     <% if((!(invitations[i].Accepted=='NA')) && (JSON.parse(invitations[i].Accepted).includes(name))) { %>
                         <p class="desc">ACCEPTED!</p>
                     <% } %>
@@ -101,6 +84,11 @@
                         <% } %>
                     <% } %>
                     </div>
+                <% }else{ %>
+                    <p class="desc">Recipients:</p>
+                    <% for(var k=0; k < JSON.parse(invitations[i].Recipients).length;k++) { %>
+                        <p class="desc"><%= JSON.parse(invitations[i].Recipients)[k] %></p>
+                    <% } %>
                 <% } %>
                 <hr>
             <% } %>
@@ -112,11 +100,9 @@
             console.log('clicked');
             console.log(e.target.innerHTML);
             if(e.target.innerHTML=='REJECT'){
-                // e.target.innerHTML= 'REJECTED';
                 console.log(e.target.parentNode.innerHTML= '<p class="desc"> REJECTED! </p><hr>' );
             }
             if(e.target.innerHTML=='ACCEPT'){
-                // e.target.innerHTML= 'REJECTED';
                 console.log(e.target.parentNode.innerHTML= '<p class="desc"> ACCEPTED! </p><hr>' );
             }
         });

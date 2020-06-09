@@ -37,23 +37,25 @@ app.get('/login', (req,res)=>{
 
 app.post('/auth', (req,res)=>{
     var username = req.body.username;
-	var password = req.body.password;
-    if (username && password) {
-		connection.query('SELECT * FROM UserAccounts WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
-        // connection.query('SELECT * FROM USERACCOUNTS', function(error, results){
-            if (error) throw error;
-            if (results.length>0) {
-				req.session.loggedin = true;
-				req.session.username = username;
-				res.redirect('/dashboard');
-			} else {
-				res.send('Incorrect Username and/or Password!');
-            }		
-            
-            console.log(results);	
-			res.end();
-		});
-    } 
+    var password = req.body.password;
+    if(!(password.includes(' '))){
+        if (username && password) {
+            connection.query('SELECT * FROM UserAccounts WHERE Username = ? AND Password = ?', [username, password], function(error, results, fields) {
+                if (error) throw error;
+                if (results.length>0) {
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    res.redirect('/dashboard');
+                } else {
+                    res.send('Incorrect Username and/or Password!');
+                }		
+                
+                res.end();
+            });
+        } 
+    }else{
+        res.redirect('/login');
+    }
 })
 
 app.get('/signup', (req,res)=>{
@@ -63,28 +65,23 @@ app.get('/signup', (req,res)=>{
 app.post('/signupauth', function(req, res) {
     var name = req.body.name;
     var username = req.body.username;
-	var password = req.body.password;
-	if (username && password && name) {
-        var q = 'INSERT INTO UserAccounts (Name,Username,Password) VALUES (?,?,?)';
-		connection.query(q, [name, username, password], function(error, results, fields) {
-        // connection.query('SELECT * FROM USERACCOUNTS', function(error, results){
-            if (error) throw error;
-            // if (results.length>0) {
-				req.session.loggedin = true;
-				req.session.username = username;
-				res.redirect('/dashboard');
-			// } else {
-			// 	res.send('Incorrect Username and/or Password!');
-            // }		
-            
-            console.log(results);	
-			res.end();
-		});
-    } 
-    // else {
-	// 	response.send('Please enter Username and Password!');
-	// 	response.end();
-	// }
+    var password = req.body.password;
+    if(!(password.includes(' ') || password.includes('='))){
+        if (username && password && name) {
+            var q = 'INSERT INTO UserAccounts (Name,Username,Password) VALUES (?,?,?)';
+            connection.query(q, [name, username, password], function(error, results, fields) {
+                if (error) throw error;
+                req.session.loggedin = true;
+                req.session.username = username;
+                res.redirect('/dashboard');
+                    
+                
+                res.end();
+            });
+        } 
+    }else{
+        res.redirect('/signup');
+    }
 });
 
 app.get('/dashboard', (req,res)=>{
@@ -105,14 +102,11 @@ app.get('/dashboard', (req,res)=>{
             for(var i in results){
                 // console.log(results);
                 if((!(JSON.parse(results[j].Recipients)).includes(name))){
-                    console.log("Sth");
                     index.push(j);
-                    //results.splice(j,1);
-                    // resultobj.push(results[j]);
+                    
                 }
                 j++;
             }
-            console.log(Object.keys(results[0]).length);
             res.render('dashboard', {invitations: results, index: index, username:req.session.username, count: 0, count1: 0});
             
         });        
@@ -136,31 +130,30 @@ app.get('/dashboard/:id', (req,res)=>{
         var q = "SELECT * FROM Invitations";
         connection.query(q, (error, results, fields)=>{
             if(error) throw error;
-            console.log(Object.keys(results[0]).length);
             res.render('dashboard', {invitations: results, title:req.params.id, name:req.session.username});
         });
     }
 });
 
 app.post('/ar/:title', (req,res)=>{
-    console.log("post request initiated...");
-    console.log(req.body);
-    console.log(req.params);
+    
     var ar = req.body.ar;
     var accept = [];
     var reject = [];
     var status={};
-    console.log(typeof(status.accepted));
     if(ar=='accept'){
         connection.query('SELECT Accepted FROM Invitations WHERE Title=?', [req.params.title], (error,results,fields)=>{
             if(JSON.parse(results[0].Accepted=='NA')){
                 accept.push(req.session.username);
                 var q = 'UPDATE Invitations SET Accepted=? WHERE Title=?';
                 connection.query(q, [JSON.stringify(accept), req.params.title], (error, results, fields)=>{
-                    console.log("succesful update");
                 })
             }else{
-                console.log(JSON.parse(results[0].Accepted));
+                accept=JSON.parse(results[0].Accepted);
+                accept.push(req.session.username);
+                var q = 'UPDATE Invitations SET Accepted=? WHERE Title=?';
+                connection.query(q, [JSON.stringify(accept), req.params.title], (error, results, fields)=>{
+                });
             }
         })
     }else if(ar=='reject'){
@@ -169,8 +162,13 @@ app.post('/ar/:title', (req,res)=>{
                 reject.push(req.session.username);
                 var q = 'UPDATE Invitations SET Rejected=? WHERE Title=?';
                 connection.query(q, [JSON.stringify(reject), req.params.title], (error, results, fields)=>{
-                    console.log("succesful update");
                 })
+            }else{
+                reject = JSON.parse(results[0].Rejected);
+                reject.push(req.session.username);
+                var q = 'UPDATE Invitations SET Rejected=? WHERE Title=?';
+                connection.query(q, [JSON.stringify(reject), req.params.title], (error, results, fields)=>{
+                });
             }
         })
     }
@@ -205,6 +203,8 @@ app.post('/addinvitation', (req, res)=>{
             res.redirect('/dashboard');
         });
         
+    }else{
+        res.redirect('/invite');
     }
 });
 

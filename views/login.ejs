@@ -7,7 +7,15 @@
     <link rel = 'stylesheet' href = 'loginstyles.css'>
 </head>
 <body>
-    <%- include('partials/nav.ejs') %>
+    <nav class = 'navbar'>
+        
+        <div class = 'navtitle'>URInvited.com</div>
+        <div class = 'navitem' >
+            <a href="login"><button>LogIn</button></a>
+            <a href = "signup"><button>SignUp</button></a>
+        </div>
+                
+    </nav>
     <br><br>
     <div class="login">
         <form class="form-login" action='auth' method='POST'>       
